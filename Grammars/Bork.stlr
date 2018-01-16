@@ -1,0 +1,13 @@
+//
+// A grammar for the Bork text-adventure
+//
+
+@pin verb        = "INVENTORY" | "GO" | "PICKUP" | "DROP" | "ATTACK"
+@pin noun        = "NORTH" | "SOUTH" | "KITTEN" | "SNAKE" | "CLUB" | "SWORD"
+@pin adjective   = "FLUFFY" | "ANGRY" | "DEAD"
+@pin preposition = "WITH" | "USING"
+
+// Commands
+//
+subject   = (adjective .whitespaces)? noun
+command   = verb (.whitespaces subject (.whitespaces preposition .whitespaces @token("secondSubject") subject)? )?
