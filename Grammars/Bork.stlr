@@ -9,5 +9,5 @@
 
 // Commands
 //
-subject   = (adjective .whitespaces)? noun
-command   = verb (.whitespaces subject (.whitespaces preposition .whitespaces @token("secondSubject") subject)? )?
+subject   = (adjective .whitespace)? noun
+command   = verb (.whitespace subject (.whitespace preposition .whitespace @token("secondSubject") subject)? )?

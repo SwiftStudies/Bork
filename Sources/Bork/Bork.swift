@@ -1,9 +1,15 @@
 // 
 // STLR Generated Swift File
 // 
-// Generated: 2018-01-15 16:39:25 +0000
+// Generated: 2018-06-17 19:09:57 +0000
 // 
+#if os(macOS)
 import Cocoa
+#elseif os(iOS)
+import UIKit
+#else
+import Foundation
+#endif
 import OysterKit
 
 // 
@@ -22,24 +28,24 @@ enum Bork : Int, Token {
 			return CharacterSet(charactersIn: "").terminal(token: T._transient)
 		// verb
 		case .verb:
-			return ScannerRule.oneOf(token: T.verb, ["INVENTORY", "GO", "PICKUP", "DROP", "ATTACK"],[RuleAnnotation.pinned : RuleAnnotationValue.set].merge(with: annotations))
+			return ScannerRule.oneOf(token: T.verb, ["INVENTORY", "GO", "PICKUP", "DROP", "ATTACK"],[RuleAnnotation.custom(label: "pin") : RuleAnnotationValue.set].merge(with: annotations))
 		// noun
 		case .noun:
-			return ScannerRule.oneOf(token: T.noun, ["NORTH", "SOUTH", "KITTEN", "SNAKE", "CLUB", "SWORD"],[RuleAnnotation.pinned : RuleAnnotationValue.set].merge(with: annotations))
+			return ScannerRule.oneOf(token: T.noun, ["NORTH", "SOUTH", "KITTEN", "SNAKE", "CLUB", "SWORD"],[RuleAnnotation.custom(label: "pin") : RuleAnnotationValue.set].merge(with: annotations))
 		// adjective
 		case .adjective:
-			return ScannerRule.oneOf(token: T.adjective, ["FLUFFY", "ANGRY", "DEAD"],[RuleAnnotation.pinned : RuleAnnotationValue.set].merge(with: annotations))
+			return ScannerRule.oneOf(token: T.adjective, ["FLUFFY", "ANGRY", "DEAD"],[RuleAnnotation.custom(label: "pin") : RuleAnnotationValue.set].merge(with: annotations))
 		// preposition
 		case .preposition:
-			return ScannerRule.oneOf(token: T.preposition, ["WITH", "USING"],[RuleAnnotation.pinned : RuleAnnotationValue.set].merge(with: annotations))
+			return ScannerRule.oneOf(token: T.preposition, ["WITH", "USING"],[RuleAnnotation.custom(label: "pin") : RuleAnnotationValue.set].merge(with: annotations))
 		// subject
 		case .subject:
 			return [
 					[
-									T.adjective._rule([RuleAnnotation.pinned : RuleAnnotationValue.set]),
+									T.adjective._rule([RuleAnnotation.custom(label: "pin") : RuleAnnotationValue.set]),
 									CharacterSet.whitespaces.terminal(token: T._transient),
 									].sequence(token: T._transient).optional(producing: T._transient),
-					T.noun._rule([RuleAnnotation.pinned : RuleAnnotationValue.set]),
+					T.noun._rule([RuleAnnotation.custom(label: "pin") : RuleAnnotationValue.set]),
 					].sequence(token: T.subject, annotations: annotations.isEmpty ? [ : ] : annotations)
 		// secondSubject
 		case .secondSubject:
@@ -47,13 +53,13 @@ enum Bork : Int, Token {
 		// command
 		case .command:
 			return [
-					T.verb._rule([RuleAnnotation.pinned : RuleAnnotationValue.set]),
+					T.verb._rule([RuleAnnotation.custom(label: "pin") : RuleAnnotationValue.set]),
 					[
 									CharacterSet.whitespaces.terminal(token: T._transient),
 									T.subject._rule(),
 									[
 													CharacterSet.whitespaces.terminal(token: T._transient),
-													T.preposition._rule([RuleAnnotation.pinned : RuleAnnotationValue.set]),
+													T.preposition._rule([RuleAnnotation.custom(label: "pin") : RuleAnnotationValue.set]),
 													CharacterSet.whitespaces.terminal(token: T._transient),
 													T.secondSubject._rule(),
 													].sequence(token: T._transient).optional(producing: T._transient),
@@ -69,7 +75,7 @@ enum Bork : Int, Token {
 	}
 
 	// Convient way to apply your grammar to a string
-	public static func parse(source: String) -> DefaultHeterogeneousAST {
-		return Bork.generatedLanguage.build(source: source)
+	public static func parse(source: String) throws -> HomogenousTree {
+		return try AbstractSyntaxTreeConstructor().build(source, using: generatedLanguage)
 	}
 }

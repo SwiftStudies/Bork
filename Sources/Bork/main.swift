@@ -14,7 +14,7 @@ while let userInput = readLine(strippingNewline: true), userInput != "QUIT" {
     } else {
         // Process their input
         do {
-            let command = try ParsingDecoder().decode(Command.self, from: userInput.data(using: .utf8) ?? Data(), with: Bork.generatedLanguage)
+            let command = try ParsingDecoder().decode(Command.self, from: userInput , using: Bork.generatedLanguage)
             
             // Execute the command
             interpreter.interpret(command, inGame: game)
