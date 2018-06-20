@@ -1,7 +1,7 @@
 // 
 // STLR Generated Swift File
 // 
-// Generated: 2018-06-17 19:09:57 +0000
+// Generated: 2018-06-20 01:20:46 +0000
 // 
 #if os(macOS)
 import Cocoa
@@ -49,7 +49,13 @@ enum Bork : Int, Token {
 					].sequence(token: T.subject, annotations: annotations.isEmpty ? [ : ] : annotations)
 		// secondSubject
 		case .secondSubject:
-			return [T.subject._rule()].sequence(token: self)
+			return [
+					[
+									T.adjective._rule([RuleAnnotation.custom(label: "pin") : RuleAnnotationValue.set]),
+									CharacterSet.whitespaces.terminal(token: T._transient),
+									].sequence(token: T._transient).optional(producing: T._transient),
+					T.noun._rule([RuleAnnotation.custom(label: "pin") : RuleAnnotationValue.set]),
+					].sequence(token: T.secondSubject, annotations: annotations.isEmpty ? [ : ] : annotations)
 		// command
 		case .command:
 			return [
